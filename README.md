@@ -43,39 +43,19 @@ For the purpose of this test, sending a notification is simulated without actual
 
 ## Project Setup
 
-1. Install Symfony CLI:
+1. Install Dependencies:
 
 ```bash
-curl -sS https://get.symfony.com/cli/installer | bash
-sudo mv /home/$USER/.symfony*/bin/symfony /usr/local/bin/symfony
+composer install
 ```
 
-2. Create Project:
-
-```bash
-symfony new notification-api --full
-cd notification-api
-```
-
-3. Install Dependencies:
-
-```bash
-composer require symfony/orm-pack symfony/validator symfony/cache
-```
-
-4. Configure MySQL in `.env`:
+2. Configure MySQL in `.env`:
 
 ```
 DATABASE_URL="mysql://username:password@127.0.0.1:3306/notification_api"
 ```
 
-5. Create Database:
-
-```bash
-php bin/console doctrine:database:create
-```
-
-6. Run Server:
+3. Run Server:
 
 ```bash
 symfony serve

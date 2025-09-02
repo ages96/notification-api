@@ -156,3 +156,9 @@ curl http://127.0.0.1:8000/api/notifications?page=1&limit=5
 ```bash
 curl -X POST http://127.0.0.1:8000/api/notifications/1/send
 ```
+
+## Demo
+
+You can watch a short demo of the Notification API and the dashboard here:
+
+[![Notification API Demo](https://img.youtube.com/vi/QhruPrumCIc/0.jpg)](https://www.youtube.com/watch?v=QhruPrumCIc)

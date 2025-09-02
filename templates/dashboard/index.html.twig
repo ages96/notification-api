@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notification Dashboard{% endblock %}
+
+{% block body %}
+<h1>Notification Dashboard</h1>
+
+{% for message in app.flashes('success') %}
+    <div style="color: green;">{{ message }}</div>
+{% endfor %}
+{% for message in app.flashes('warning') %}
+    <div style="color: orange;">{{ message }}</div>
+{% endfor %}
+
+<h2>Create Notification</h2>
+{{ form_start(form) }}
+    {{ form_row(form.recipientEmail) }}
+    {{ form_row(form.subject) }}
+    {{ form_row(form.body) }}
+    {{ form_row(form.save) }}
+{{ form_end(form) }}
+
+<h2>Notification List</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+        <th>ID</th>
+        <th>Recipient</th>
+        <th>Subject</th>
+        <th>Body</th>
+        <th>Status</th>
+        <th>Created At</th>
+        <th>Sent At</th>
+        <th>Actions</th>
+    </tr>
+    {% for n in notifications %}
+    <tr>
+        <td>{{ n.id }}</td>
+        <td>{{ n.recipientEmail }}</td>
+        <td>{{ n.subject }}</td>
+        <td>{{ n.body }}</td>
+        <td>{{ n.status }}</td>
+        <td>{{ n.createdAt ? n.createdAt|date('Y-m-d H:i') : '' }}</td>
+        <td>{{ n.sentAt ? n.sentAt|date('Y-m-d H:i') : '' }}</td>
+        <td>
+            {% if n.status != 'sent' %}
+                <a href="{{ path('dashboard_send', {id: n.id}) }}">Send</a>
+            {% else %}
+                Sent
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

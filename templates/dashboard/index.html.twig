@@ -3,52 +3,77 @@
 {% block title %}Notification Dashboard{% endblock %}
 
 {% block body %}
-<h1>Notification Dashboard</h1>
+<h1 class="mb-4">Notification Dashboard</h1>
 
 {% for message in app.flashes('success') %}
-    <div style="color: green;">{{ message }}</div>
+    <div class="alert alert-success">{{ message }}</div>
 {% endfor %}
 {% for message in app.flashes('warning') %}
-    <div style="color: orange;">{{ message }}</div>
+    <div class="alert alert-warning">{{ message }}</div>
 {% endfor %}
 
 <h2>Create Notification</h2>
-{{ form_start(form) }}
-    {{ form_row(form.recipientEmail) }}
-    {{ form_row(form.subject) }}
-    {{ form_row(form.body) }}
-    {{ form_row(form.save) }}
-{{ form_end(form) }}
+<div class="card mb-4">
+    <div class="card-body">
+        {{ form_start(form) }}
+            <div class="mb-3">
+                {{ form_label(form.recipientEmail) }}
+                {{ form_widget(form.recipientEmail, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.recipientEmail) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.subject) }}
+                {{ form_widget(form.subject, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.subject) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.body) }}
+                {{ form_widget(form.body, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+                {{ form_errors(form.body) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
 
 <h2>Notification List</h2>
-<table border="1" cellpadding="5" cellspacing="0">
-    <tr>
-        <th>ID</th>
-        <th>Recipient</th>
-        <th>Subject</th>
-        <th>Body</th>
-        <th>Status</th>
-        <th>Created At</th>
-        <th>Sent At</th>
-        <th>Actions</th>
-    </tr>
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Recipient</th>
+            <th>Subject</th>
+            <th>Body</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Sent At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
     {% for n in notifications %}
-    <tr>
-        <td>{{ n.id }}</td>
-        <td>{{ n.recipientEmail }}</td>
-        <td>{{ n.subject }}</td>
-        <td>{{ n.body }}</td>
-        <td>{{ n.status }}</td>
-        <td>{{ n.createdAt ? n.createdAt|date('Y-m-d H:i') : '' }}</td>
-        <td>{{ n.sentAt ? n.sentAt|date('Y-m-d H:i') : '' }}</td>
-        <td>
-            {% if n.status != 'sent' %}
-                <a href="{{ path('dashboard_send', {id: n.id}) }}">Send</a>
-            {% else %}
-                Sent
-            {% endif %}
-        </td>
-    </tr>
+        <tr>
+            <td>{{ n.id }}</td>
+            <td>{{ n.recipientEmail }}</td>
+            <td>{{ n.subject }}</td>
+            <td>{{ n.body }}</td>
+            <td>
+                {% if n.status == 'sent' %}
+                    <span class="badge bg-success">Sent</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                {% endif %}
+            </td>
+            <td>{{ n.createdAt ? n.createdAt|date('Y-m-d H:i') : '' }}</td>
+            <td>{{ n.sentAt ? n.sentAt|date('Y-m-d H:i') : '' }}</td>
+            <td>
+                {% if n.status != 'sent' %}
+                    <a href="{{ path('dashboard_send', {id: n.id}) }}" class="btn btn-sm btn-primary">Send</a>
+                {% else %}
+                    <button class="btn btn-sm btn-secondary" disabled>Sent</button>
+                {% endif %}
+            </td>
+        </tr>
     {% endfor %}
+    </tbody>
 </table>
 {% endblock %}

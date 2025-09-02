@@ -54,8 +54,13 @@ composer install
 ```
 DATABASE_URL="mysql://username:password@127.0.0.1:3306/notification_api"
 ```
+3. Run Migration:
 
-3. Run Server:
+```bash
+php bin/console doctrine:migrations:migrate
+```
+
+4. Run Server:
 
 ```bash
 symfony serve
